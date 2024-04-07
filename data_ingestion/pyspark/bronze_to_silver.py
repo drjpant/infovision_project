@@ -25,14 +25,15 @@ my_conf.set("spark.master","local[*]")
 spark= SparkSession.builder.config(conf= my_conf).getOrCreate()
 
 DF= spark.read.option("header",True).option("inferSchema",True).json(r"C:\Users\91812\Downloads\data1.txt")
-DF=DF.drop("cluster_id","authors_byline",)
-DF=DF.withColumn("insertdate",current_date()).withColumn("insertdtm",current_timestamp())
+df1=spark.read.option("header",True).option("inferSchema",True).parquet(r"C:\Users\91812\Downloads\data1.txt")
+DF2=DF.union(df1)
+#DF=DF.withColumn("insertdate",current_date()).withColumn("insertdtm",current_timestamp())
 #orderDF=orderDF.withColumn("insertdtm",current_timestamp())
 #groupdf=orderDF.repartition(4).where("order_customer_id> 10000").select("order_id","order_customer_id") \
 #    .groupby("order_customer_id").count()
-DF.show(20)
+DF2.show(20)
 
-DF.write.parquet(r"C:\Users\91812\Downloads\data1.parquet")
+DF2.write.parquet(r"C:\Users\91812\Downloads\data1.parquet").mode("overwrite")
 #orderDF.printSchema()
 
 #orderDF.show()
