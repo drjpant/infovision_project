@@ -1,5 +1,7 @@
 import os
 import sys
+
+import args as args
 from pyspark.sql import SparkSession
 from pyspark import SparkContext, StorageLevel
 from pyspark import SparkConf
@@ -23,19 +25,19 @@ my_conf.set("spark.app.name","my first application")
 my_conf.set("spark.master","local[*]")
 
 
+
 spark= SparkSession.builder.config(conf= my_conf).getOrCreate()
 
-orderDF= spark.read.option("header",True).option("inferSchema",True).json(r"C:\Users\91812\Downloads\data1.txt")
-orderDF=orderDF.drop("cluster_id","authors_byline",)
-#groupdf=orderDF.repartition(4).where("order_customer_id> 10000").select("order_id","order_customer_id") \
-#    .groupby("order_customer_id").count()
-orderDF.show(20)
+#passing the argument
+api_file = args['api_file']
+secret_name = args['secret_name']
 
-orderDF.write.parquet(r"C:\Users\91812\Downloads\data1.parquet")
-#orderDF.printSchema()
+api_token = get_secret_value(sc_client, secret_name=secret_name)
 
-#orderDF.show()
-spark.stop()
+#api_request
+url =base_url_siteid+'?keyword_name'=url_encoded_keyword + '&end_date'= end_date)
+response = requests.get(url)
+get_text_upload_landing_path(response,s3_landing_bucket)
 
 
 
